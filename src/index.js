@@ -258,7 +258,6 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
     if (text?.startsWith('/mytop')) { 
       const loader = await bot.sendMessage(chat.id, "⏳");
       processLongTask(chat.id, from, loader.message_id, userReplenishments)
-      return
     }
 
 
