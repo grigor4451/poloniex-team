@@ -341,18 +341,7 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
       return bot.sendPhoto(chat.id, image, {
         caption: `
     📈 Вклад в кассу: ${userReplenishmentSum[0] ? ((+userReplenishmentSum[0]?.totalAmount / +totalReplenishmentSum[0]?.totalSum) * 100).toFixed(3) : 0}%`
-<<<<<<< HEAD
       })
-=======
-});
-        
-        } catch (error) {
-          console.error("Error while generating or sending image:", error);
-          bot.sendMessage(chat.id, "Sorry, something went wrong while generating your image.");
-        }
-      }, 5000); // Delay to simulate async background process (can adjust as needed)
-
->>>>>>> 4393417d470cb44b07fc7dcbc13779a7891b882d
     }
 
 
