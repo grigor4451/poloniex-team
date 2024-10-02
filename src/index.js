@@ -336,7 +336,7 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
           console.error("Error while generating or sending image:", error);
           bot.sendMessage(chat.id, "Sorry, something went wrong while generating your image.");
         }
-      }, 1000); // Delay to simulate async background process (can adjust as needed)
+      }, 5000); // Delay to simulate async background process (can adjust as needed)
 
     }
 
