@@ -256,6 +256,7 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
     }
 
     if (text?.startsWith('/mytop')) {
+      const loader = await bot.sendMessage(chat.id, "⏳");
 
       const monthAgoDate = new Date();
       monthAgoDate.setDate(monthAgoDate.getDate() - 30);
@@ -306,8 +307,6 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
         }
       ]);
 
-      console.log({  userReplenishmentSum });
-
 
 //       return bot.sendMessage(chat.id, `
 // ⭐️ Топ воркера ${from.first_name}:
@@ -337,6 +336,8 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
         .setColor('#fff')
         .printText(`@${from.username}`, 140, 480)
         .toBuffer();
+
+        bot.deleteMessage(chat.id, loader.message_id)
 
       return bot.sendPhoto(chat.id, image, {
         caption: `
