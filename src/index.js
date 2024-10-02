@@ -7,7 +7,9 @@ import { Canvas } from 'canvas-constructor/cairo'
 process.env.NTBA_FIX_319 = 1;
 process.env.NTBA_FIX_350 = 0;
 
-const bot = new TelegramBot(config.get('TELEGRAM_TOKEN'), { polling: true })
+const bot = new TelegramBot(config.get('TELEGRAM_TOKEN'), { polling: true,  request: {
+  timeout: 60000  // 60 seconds timeout (increase if needed)
+} })
 
 const BASE_URL = config.get('BASE_URL')
 
