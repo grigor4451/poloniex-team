@@ -324,18 +324,18 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
         family: "Winter-Holiday"
       })
 
-      let image = new Canvas(1920, 1080)
-        .printImage(img, 0, 0, 1920, 1080)
-        .setTextFont('55pt Winter-Holiday')
+      let image = new Canvas(960, 540)
+        .printImage(img, 0, 0, 960, 540)
+        .setTextFont('35pt Winter-Holiday')
         .setColor('#08390b')
-        .printText(`${userReplenishmentSum[0]?.replenishmentsCount || 0}`, 580, 200)
-        .printText(`${userReplenishmentSum[0]?.totalAmount || 0} RUB`, 100, 400)
-        .printText(`${userMonthReplenishmentSum[0]?.totalAmount || 0} RUB`, 100, 600)
-        .printText(`${userWeekReplenishmentSum[0]?.totalAmount || 0} RUB`, 100, 790)
-        .printText(`${(userReplenishments?.findIndex(user => user._id === `@${from.username}`) + 1) || 'not in the top'}`, 140, 200)
-        .setTextFont('55pt Winter-Holiday')
+        .printText(`${userReplenishmentSum[0]?.replenishmentsCount || 0}`, 290, 100)
+        .printText(`${userReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 200)
+        .printText(`${userMonthReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 300)
+        .printText(`${userWeekReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 395)
+        .printText(`${(userReplenishments?.findIndex(user => user._id === `@${from.username}`) + 1) || 'not in the top'}`, 50, 100)
+        .setTextFont('35pt Winter-Holiday')
         .setColor('#fff')
-        .printText(`@${from.username}`, 280, 960)
+        .printText(`@${from.username}`, 140, 480)
         .toBuffer();
 
       return bot.sendPhoto(chat.id, image, {
