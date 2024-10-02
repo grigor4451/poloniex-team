@@ -257,7 +257,7 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
 
     if (text?.startsWith('/mytop')) { 
       const loader = await bot.sendMessage(chat.id, "⏳");
-      processLongTask(chat.id, from, loader.message_id, userReplenishments)
+      processLongTask(chat.id, from, loader.message_id, userReplenishments, totalReplenishmentSum)
     }
 
 
@@ -480,7 +480,7 @@ function replenishmentMenu(chatId) {
   )
 }
 
-async function processLongTask(chatId, from, loaderId, userReplenishments) {
+async function processLongTask(chatId, from, loaderId, userReplenishments, totalReplenishmentSum) {
   const monthAgoDate = new Date();
   monthAgoDate.setDate(monthAgoDate.getDate() - 30);
 
