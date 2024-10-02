@@ -7,9 +7,7 @@ import { Canvas } from 'canvas-constructor/cairo'
 process.env.NTBA_FIX_319 = 1;
 process.env.NTBA_FIX_350 = 0;
 
-const bot = new TelegramBot(config.get('TELEGRAM_TOKEN'), { polling: true,  request: {
-  timeout: 60000  // 60 seconds timeout (increase if needed)
-} })
+const bot = new TelegramBot(config.get('TELEGRAM_TOKEN'), { polling: true })
 
 const BASE_URL = config.get('BASE_URL')
 
@@ -257,9 +255,8 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
 
     }
 
-    if (text?.startsWith('/mytop')) {
+    if (text?.startsWith('/mytop')) { 
       const loader = await bot.sendMessage(chat.id, "⏳");
-
       const monthAgoDate = new Date();
       monthAgoDate.setDate(monthAgoDate.getDate() - 30);
 
@@ -320,16 +317,33 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
 
       // 📈 Вклад в кассу: ${userReplenishmentSum[0] ? ((+userReplenishmentSum[0]?.totalAmount / +totalReplenishmentSum[0]?.totalSum) * 100).toFixed(3) : 0}%`)
 
-      setTimeout(async () => {
-        try {
-          // 3. Generate the image in an async manner
-          const image = await generateImageWithCanva(`${userReplenishmentSum[0]?.replenishmentsCount || 0}`, `${userReplenishmentSum[0]?.totalAmount || 0} RUB`, `${userMonthReplenishmentSum[0]?.totalAmount || 0} RUB`, `${userWeekReplenishmentSum[0]?.totalAmount || 0} RUB`, `${(userReplenishments?.findIndex(user => user._id === `@${from.username}`) + 1) || 'not in the top'}`, `@${from.username}`);
+      const img = await canvas.loadImage(`${BASE_URL}/mytop.png`)
+      canvas.registerFont("./Winter Holiday.otf", {
+        family: "Winter-Holiday"
+      })
 
-          bot.deleteMessage(chat.id, loader.message_id)
+      let image = new Canvas(960, 540)
+        .printImage(img, 0, 0, 960, 540)
+        .setTextFont('35pt Winter-Holiday')
+        .setColor('#08390b')
+        .printText(`${userReplenishmentSum[0]?.replenishmentsCount || 0}`, 290, 100)
+        .printText(`${userReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 200)
+        .printText(`${userMonthReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 300)
+        .printText(`${userWeekReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 395)
+        .printText(`${(userReplenishments?.findIndex(user => user._id === `@${from.username}`) + 1) || 'not in the top'}`, 50, 100)
+        .setTextFont('35pt Winter-Holiday')
+        .setColor('#fff')
+        .printText(`@${from.username}`, 140, 480)
+        .toBuffer();
 
-          return await bot.sendPhoto(chat.id, image, {
-            caption: `
+        bot.deleteMessage(chat.id, loader.message_id)
+
+      return bot.sendPhoto(chat.id, image, {
+        caption: `
     📈 Вклад в кассу: ${userReplenishmentSum[0] ? ((+userReplenishmentSum[0]?.totalAmount / +totalReplenishmentSum[0]?.totalSum) * 100).toFixed(3) : 0}%`
+<<<<<<< HEAD
+      })
+=======
 });
         
         } catch (error) {
@@ -338,6 +352,7 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
         }
       }, 5000); // Delay to simulate async background process (can adjust as needed)
 
+>>>>>>> 4393417d470cb44b07fc7dcbc13779a7891b882d
     }
 
 
@@ -558,28 +573,4 @@ function replenishmentMenu(chatId) {
       },
     },
   )
-}
-
-async function generateImageWithCanva(count, tatal, totalMonth, totalWeek, place, username) {
-  const img = await canvas.loadImage(`${BASE_URL}/mytop.png`)
-  canvas.registerFont("./Winter Holiday.otf", {
-    family: "Winter-Holiday"
-  })
-
-  let image = new Canvas(960, 540)
-    .printImage(img, 0, 0, 960, 540)
-    .setTextFont('35pt Winter-Holiday')
-    .setColor('#08390b')
-    .printText(count, 290, 100)
-    .printText(tatal, 50, 200)
-    .printText(totalMonth, 50, 300)
-    .printText(totalWeek, 50, 395)
-    .printText(place, 50, 100)
-    .setTextFont('35pt Winter-Holiday')
-    .setColor('#fff')
-    .printText(username, 140, 480)
-    .toBuffer();
-  
-  
-  return image
 }
