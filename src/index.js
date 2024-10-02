@@ -256,8 +256,7 @@ ${userReplenishmentsDay.map((user, index) => `${index === 0 ? '🥇' : index ===
     }
 
     if (text?.startsWith('/mytop')) { 
-      const loader = await bot.sendMessage(chat.id, "⏳");
-      processLongTask(chat.id, from, loader.message_id, userReplenishments, totalReplenishmentSum)
+      return processLongTask(chat.id, from, userReplenishments, totalReplenishmentSum)
     }
 
 
@@ -480,7 +479,7 @@ function replenishmentMenu(chatId) {
   )
 }
 
-async function processLongTask(chatId, from, loaderId, userReplenishments, totalReplenishmentSum) {
+async function processLongTask(chatId, from, userReplenishments, totalReplenishmentSum) {
   const monthAgoDate = new Date();
   monthAgoDate.setDate(monthAgoDate.getDate() - 30);
 
@@ -531,39 +530,40 @@ async function processLongTask(chatId, from, loaderId, userReplenishments, total
   ]);
 
 
-  //       return bot.sendMessage(chat.id, `
-  // ⭐️ Топ воркера ${from.first_name}:
-  // 🏆 Место в топе ${(userReplenishments?.findIndex(user => user._id === `@${from.username}`) + 1) || 'нет'}
-  // 💸 Сумма залетов за все время: ${userReplenishmentSum[0]?.totalAmount || 0}₽
+        return bot.sendMessage(chatId, `
+    ⭐️ Топ воркера ${from.first_name}:
+🏆 Место в топе ${(userReplenishments?.findIndex(user => user._id === `@${from.username}`) + 1) || 'не в топе'}
+💸 Сумма залетов за все время: ${userReplenishmentSum[0]?.totalAmount || 0}₽
+🤑 Количество залетов за все время: ${userReplenishmentSum[0]?.replenishmentsCount || 0}
 
-  // 💵 Сумма залетов за последий месяц: ${userMonthReplenishmentSum[0]?.totalAmount || 0}₽
-  // 💵 Сумма залето за последнюю неделю: ${userWeekReplenishmentSum[0]?.totalAmount || 0}₽
+💵 Сумма залетов за последий месяц: ${userMonthReplenishmentSum[0]?.totalAmount || 0}₽
+💵 Сумма залетов за последнюю неделю: ${userWeekReplenishmentSum[0]?.totalAmount || 0}₽
 
-  // 📈 Вклад в кассу: ${userReplenishmentSum[0] ? ((+userReplenishmentSum[0]?.totalAmount / +totalReplenishmentSum[0]?.totalSum) * 100).toFixed(3) : 0}%`)
+📈 Вклад в кассу: ${userReplenishmentSum[0] ? ((+userReplenishmentSum[0]?.totalAmount / +totalReplenishmentSum[0]?.totalSum) * 100).toFixed(3) : 0}%`)
 
-  const img = await canvas.loadImage(`${BASE_URL}/mytop.png`)
-  canvas.registerFont("./Winter Holiday.otf", {
-    family: "Winter-Holiday"
-  })
+  // const img = await canvas.loadImage(`${BASE_URL}/mytop.png`)
+  // canvas.registerFont("./Winter Holiday.otf", {
+  //   family: "Winter-Holiday"
+  // })
 
-  let image = new Canvas(960, 540)
-    .printImage(img, 0, 0, 960, 540)
-    .setTextFont('35pt Winter-Holiday')
-    .setColor('#08390b')
-    .printText(`${userReplenishmentSum[0]?.replenishmentsCount || 0}`, 290, 100)
-    .printText(`${userReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 200)
-    .printText(`${userMonthReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 300)
-    .printText(`${userWeekReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 395)
-    .printText(`${(userReplenishments?.findIndex(user => user._id === `@${from.username}`) + 1) || 'not in the top'}`, 50, 100)
-    .setTextFont('35pt Winter-Holiday')
-    .setColor('#fff')
-    .printText(`@${from.username}`, 140, 480)
-    .toBuffer();
+  // let image = new Canvas(960, 540)
+  //   .printImage(img, 0, 0, 960, 540)
+  //   .setTextFont('35pt Winter-Holiday')
+  //   .setColor('#08390b')
+  //   .printText(`${userReplenishmentSum[0]?.replenishmentsCount || 0}`, 290, 100)
+  //   .printText(`${userReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 200)
+  //   .printText(`${userMonthReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 300)
+  //   .printText(`${userWeekReplenishmentSum[0]?.totalAmount || 0} RUB`, 50, 395)
+  //   .printText(`${(userReplenishments?.findIndex(user => user._id === `@${from.username}`) + 1) || 'not in the top'}`, 50, 100)
+  //   .setTextFont('35pt Winter-Holiday')
+  //   .setColor('#fff')
+  //   .printText(`@${from.username}`, 140, 480)
+  //   .toBuffer();
 
-  bot.deleteMessage(chatId, loaderId)
+  // bot.deleteMessage(chatId, loaderId)
 
-  return bot.sendPhoto(chatId, image, {
-    caption: `
-    📈 Вклад в кассу: ${userReplenishmentSum[0] ? ((+userReplenishmentSum[0]?.totalAmount / +totalReplenishmentSum[0]?.totalSum) * 100).toFixed(3) : 0}%`
-  })
+  // return bot.sendPhoto(chatId, image, {
+  //   caption: `
+  //   📈 Вклад в кассу: ${userReplenishmentSum[0] ? ((+userReplenishmentSum[0]?.totalAmount / +totalReplenishmentSum[0]?.totalSum) * 100).toFixed(3) : 0}%`
+  // })
 }
